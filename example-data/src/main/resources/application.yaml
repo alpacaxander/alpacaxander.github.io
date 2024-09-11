@@ -1,0 +1,77 @@
+################################################
+# Copyright 2019, Yahoo Inc.
+# Licensed under the Apache License, Version 2.0
+# See LICENSE file in project root for terms.
+################################################
+
+app:
+  security:
+    origin: "*"
+elide:
+  json-api:
+    enabled: true
+    path: /api
+  graphql:
+    enabled: true
+    path: /graphql/api
+    subscription:
+      enabled: true
+      path: /subscription
+    federation:
+      enabled: true
+  api-docs:
+    enabled: true
+    path: /doc
+  async:
+    enabled: false
+    thread-pool-size: 2
+    cleanup:
+      enabled: true
+      query-max-run-time: 65s
+      query-retention-duration: 7d
+    export:
+      enabled: false
+  aggregation-store:
+    enabled: true
+    default-dialect: h2
+    metadata-store:
+      enabled: false
+    dynamic-config:
+      enabled: true
+      path: analytics
+spring:
+  cloud:
+    refresh:
+      enabled: false
+  application:
+    name: Elide
+  profiles:
+    active: local
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        '[default_batch_fetch_size]': 100
+        '[use_scrollable_resultset]': true
+    hibernate:
+      naming:
+        physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
+  datasource:
+    url: 'jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1'
+    username: 'sa'
+    password: ''
+    driver-class-name: 'org.h2.Driver'
+  liquibase:
+    enabled: true
+    change-log: 'classpath:db/changelog/changelog.xml'
+  activemq:
+    broker-url: 'vm://embedded?broker.persistent=false,useShutdownHook=false'
+    in-memory: true
+server:
+  port: 8080
+logging:
+  file:
+    path: /tmp
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
