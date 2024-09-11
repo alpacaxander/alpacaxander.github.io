@@ -9,3 +9,8 @@ This blank canvas API uses [elide](https://elide.io/) which I like because it is
 - Maven
 - Elide
 - Liquibase
+
+## Motivations
+
+### Data API
+API design is interesting to me because it defines the model in which the frontend uses and backend is in service of. API's are also a mature idea & technology. The good part of it being so mature is that there are really good specifications, libraries, tools, and approaches that make building an API a solved problem. For example: this blank canvas data API will use a library called [elide](https://elide.io/) which I like because it is built around defining the model of your data and defining where the data is then building the API entirely.
