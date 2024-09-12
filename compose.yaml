@@ -8,5 +8,7 @@ services:
 
   example-ui:
     build: ./example-frontend
+    volumes:
+      - ./example-frontend/src:/src
     ports:
       - "3000:3000"
