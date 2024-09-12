@@ -23,12 +23,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 @EntityScan
 @ImportRuntimeHints(AppRuntimeHints.class)
 @OpenAPIDefinition(info = @Info(title = "My Title"), security = @SecurityRequirement(name = "bearerAuth"))
-@SecurityScheme(
-        name = "bearerAuth",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-    )
+@SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class App {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(App.class, args);

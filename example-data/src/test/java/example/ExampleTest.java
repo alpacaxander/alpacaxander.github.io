@@ -55,26 +55,22 @@ public class ExampleTest extends IntegrationTest {
     })
     void jsonApiGetTest() {
         when()
-            .get("/api/group")
-            .then()
-            .log().all()
-            .body(equalTo(
-                data(
-                    resource(
-                        type( "group"),
-                        id("com.example.repository"),
-                        attributes(
-                            attr("commonName", "Example Repository"),
-                            attr("description", "The code for this project")
-                        ),
-                        relationships(
-                            relation("products")
-                        )
-                    )
-                ).toJSON())
-            )
-            .log().all()
-            .statusCode(HttpStatus.SC_OK);
+                .get("/api/group")
+                .then()
+                .log().all()
+                .body(equalTo(
+                        data(
+                                resource(
+                                        type("group"),
+                                        id("com.example.repository"),
+                                        attributes(
+                                                attr("commonName", "Example Repository"),
+                                                attr("description", "The code for this project")),
+                                        relationships(
+                                                relation("products"))))
+                                .toJSON()))
+                .log().all()
+                .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -85,21 +81,17 @@ public class ExampleTest extends IntegrationTest {
     })
     void jsonApiPatchTest() {
         given()
-            .contentType(JsonApi.MEDIA_TYPE)
-            .body(
-                datum(
-                    resource(
-                        type("group"),
-                        id("com.example.repository"),
-                        attributes(
-                            attr("commonName", "Changed It.")
-                        )
-                    )
-                )
-            )
-            .when()
+                .contentType(JsonApi.MEDIA_TYPE)
+                .body(
+                        datum(
+                                resource(
+                                        type("group"),
+                                        id("com.example.repository"),
+                                        attributes(
+                                                attr("commonName", "Changed It.")))))
+                .when()
                 .patch("/api/group/com.example.repository")
-            .then()
+                .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
 
         when()
@@ -109,18 +101,14 @@ public class ExampleTest extends IntegrationTest {
                 .body(equalTo(
                         data(
                                 resource(
-                                        type( "group"),
+                                        type("group"),
                                         id("com.example.repository"),
                                         attributes(
                                                 attr("commonName", "Changed It."),
-                                                attr("description", "The code for this project")
-                                        ),
+                                                attr("description", "The code for this project")),
                                         relationships(
-                                                relation("products")
-                                        )
-                                )
-                        ).toJSON())
-                )
+                                                relation("products"))))
+                                .toJSON()))
                 .log().all()
                 .statusCode(HttpStatus.SC_OK);
     }
@@ -138,11 +126,7 @@ public class ExampleTest extends IntegrationTest {
                                         type("group"),
                                         id("com.example.repository"),
                                         attributes(
-                                                attr("commonName", "New group.")
-                                        )
-                                )
-                        )
-                )
+                                                attr("commonName", "New group.")))))
                 .when()
                 .post("/api/group")
                 .then()
@@ -152,13 +136,10 @@ public class ExampleTest extends IntegrationTest {
                                 id("com.example.repository"),
                                 attributes(
                                         attr("commonName", "New group."),
-                                        attr("description", "")
-                                ),
+                                        attr("description", "")),
                                 relationships(
-                                        relation("products")
-                                )
-                        )
-                ).toJSON()))
+                                        relation("products"))))
+                        .toJSON()))
                 .statusCode(HttpStatus.SC_CREATED);
     }
 
@@ -170,9 +151,9 @@ public class ExampleTest extends IntegrationTest {
     })
     void jsonApiDeleteTest() {
         when()
-            .delete("/api/group/com.example.repository")
-        .then()
-            .statusCode(HttpStatus.SC_NO_CONTENT);
+                .delete("/api/group/com.example.repository")
+                .then()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
     @Test
@@ -185,11 +166,10 @@ public class ExampleTest extends IntegrationTest {
     })
     void jsonApiDeleteRelationshipTest() {
         given()
-            .contentType(JsonApi.MEDIA_TYPE)
-            .body(datum(
-                linkage(type("product"), id("foo"))
-            ))
-        .when()
+                .contentType(JsonApi.MEDIA_TYPE)
+                .body(datum(
+                        linkage(type("product"), id("foo"))))
+                .when()
                 .delete("/api/group/com.example.repository")
                 .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
@@ -208,43 +188,34 @@ public class ExampleTest extends IntegrationTest {
     })
     void graphqlTest() {
         given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .body("{ \"query\" : \"" + GraphQLDSL.document(
-                query(
-                    selection(
-                        field("group",
-                            selections(
-                                field("name"),
-                                field("commonName"),
-                                field("description")
-                            )
-                        )
-                    )
-                )
-            ).toQuery() + "\" }"
-        )
-        .when()
-            .post("/graphql/api")
-            .then()
-            .body(equalTo(GraphQLDSL.document(
-                selection(
-                    field(
-                        "group",
-                        selections(
-                            field("name", "com.example.repository"),
-                            field( "commonName", "Example Repository"),
-                            field("description", "The code for this project")
-                        ),
-                        selections(
-                            field("name", "com.yahoo.elide"),
-                            field( "commonName", "Elide"),
-                            field("description", "The magical library powering this project")
-                        )
-                    )
-                )
-            ).toResponse()))
-            .statusCode(HttpStatus.SC_OK);
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body("{ \"query\" : \"" + GraphQLDSL.document(
+                        query(
+                                selection(
+                                        field("group",
+                                                selections(
+                                                        field("name"),
+                                                        field("commonName"),
+                                                        field("description"))))))
+                        .toQuery() + "\" }")
+                .when()
+                .post("/graphql/api")
+                .then()
+                .body(equalTo(GraphQLDSL.document(
+                        selection(
+                                field(
+                                        "group",
+                                        selections(
+                                                field("name", "com.example.repository"),
+                                                field("commonName", "Example Repository"),
+                                                field("description", "The code for this project")),
+                                        selections(
+                                                field("name", "com.yahoo.elide"),
+                                                field("commonName", "Elide"),
+                                                field("description", "The magical library powering this project")))))
+                        .toResponse()))
+                .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -256,7 +227,7 @@ public class ExampleTest extends IntegrationTest {
 
         try (Session session = container.connectToServer(client, new URI("ws://localhost:" + port + "/subscription"))) {
 
-            //Wait for the socket to be full established.
+            // Wait for the socket to be full established.
             client.waitOnSubscribe(10);
 
             given()
@@ -267,13 +238,9 @@ public class ExampleTest extends IntegrationTest {
                                     resource(
                                             type("group"),
                                             id("foo"),
-                                            attributes(attr("description", "bar"))
-                                    )
-                            )
-                    )
+                                            attributes(attr("description", "bar")))))
                     .post("/api/group")
                     .then().statusCode(org.apache.http.HttpStatus.SC_CREATED).body("data.id", equalTo("foo"));
-
 
             List<ExecutionResult> results = client.waitOnClose(10);
             assertEquals(1, results.size());
@@ -295,6 +262,7 @@ public class ExampleTest extends IntegrationTest {
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }
+
     @Test
     public void testDownloadAPI() throws Exception {
         given()

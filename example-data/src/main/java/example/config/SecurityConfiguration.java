@@ -1,7 +1,6 @@
 /*
- * Copyright 2020, Yahoo Inc.
- * Licensed under the Apache License, Version 2.0
- * See LICENSE file in project root for terms.
+ * Copyright 2020, Yahoo Inc. Licensed under the Apache License, Version 2.0 See LICENSE file in
+ * project root for terms.
  */
 
 package example.config;
@@ -32,9 +31,10 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(withDefaults())
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
-            .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests.anyRequest().permitAll())
-            .csrf(csrf -> csrf.disable());
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                .authorizeHttpRequests(
+                        authorizeHttpRequests -> authorizeHttpRequests.anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable());
         return http.build();
     }
 
@@ -46,7 +46,7 @@ public class SecurityConfiguration {
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setMaxAge(Duration.ofHours(1));
         configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 /**
- * Base class for running a set of functional Elide tests.  This class
+ * Base class for running a set of functional Elide tests. This class
  * sets up an Elide instance with an in-memory H2 database.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
