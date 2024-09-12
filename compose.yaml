@@ -1,0 +1,7 @@
+name: example-alpacaxander
+
+services:
+  data-api:
+    build: ./example-data
+    ports:
+      - "8080:8080"
