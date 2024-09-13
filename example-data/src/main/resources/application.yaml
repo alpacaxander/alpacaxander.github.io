@@ -9,11 +9,11 @@ app:
     origin: "*"
 okta:
   oauth2:
-    issuer: https://dev-0b3prm5u83tvplfb.us.auth0.com/
-    client-id: a5PYcHXt271eWcbVZKjPSJboh2I1myol
-    audience: https://localhost:8080
+    issuer: https://${AUTH_O_TENANT}.us.auth0.com/
+    client-id: ${AUTH_O_CLIENT_ID}
+    audience: ${AUTH_O_AUDIENCE}
     # TODO THIS IS A SECRET
-    client-secret: CLIENT_SECRET
+    client-secret: ${AUTH_O_CLIENT_SECRET}
 elide:
   json-api:
     enabled: true

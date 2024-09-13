@@ -3,12 +3,12 @@ name: example-alpacaxander
 services:
   example-api:
     build: ./example-data
+    env_file: "./example-data/.env.development"
     ports:
       - "8080:8080"
 
   example-ui:
     build: ./example-frontend
-    env_file: "./example-frontend/.env.development.local"
     volumes:
       - ./example-frontend/src:/src
     ports:

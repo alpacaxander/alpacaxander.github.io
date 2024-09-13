@@ -42,6 +42,7 @@ import liquibase.report.ShowSummaryGeneratorFactory;
 import liquibase.ui.LoggerUIService;
 
 public class AppRuntimeHints implements RuntimeHintsRegistrar {
+
         @Override
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
                 hints.resources().registerPattern("db/changelog/changelog.xml");

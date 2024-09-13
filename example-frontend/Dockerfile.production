@@ -1,0 +1,12 @@
+# DEPENDENCY STAGE
+FROM node:alpine
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm install
+RUN npm install serve
+# BUILD STAGE
+ADD public public
+ADD src src
+ADD .env.production /
+RUN npm run build:production
+# RUN STAGE
+ENTRYPOINT ["npm", "run", "run:production"]
