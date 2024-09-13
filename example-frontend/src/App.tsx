@@ -1,32 +1,32 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Login from "./features/login/Login";
-import Logout from "./features/login/Logout";
-import { useAuth0 } from "@auth0/auth0-react";
+import logo from './logo.svg'
+import './App.css'
+import Login from './features/login/Login'
+import Logout from './features/login/Logout'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function App() {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
-    useAuth0();
+    useAuth0()
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading ...</div>
   }
   if (user && isAuthenticated) {
     getAccessTokenSilently({
       authorizationParams: {
-        audience: "https://localhost:8080",
+        audience: 'https://localhost:8080',
       },
     }).then((val) => {
-      fetch("http://localhost:8080/api/group", {
+      fetch('http://localhost:8080/api/group', {
         headers: {
           authorization: `Bearer ${val}`,
         },
       }).then((result) => {
-        result.text().then(console.log);
-        console.log();
-      });
-    });
+        result.text().then(console.log)
+        console.log()
+      })
+    })
   }
-  let profile;
+  let profile
   if (isAuthenticated && user) {
     profile = (
       <div>
@@ -34,7 +34,7 @@ function App() {
         <h2>{user.name}</h2>
         <p>{user.email}</p>
       </div>
-    );
+    )
   }
   return (
     <div className="App">
@@ -56,7 +56,7 @@ function App() {
         </a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

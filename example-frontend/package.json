@@ -60,7 +60,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
 
-    "clean": "rm -rf ./node_modules ./build"
+    "clean": "rm -rf ./node_modules ./build",
+    "format": "npx prettier --config prettierrc.json --write src/"
   },
   "eslintConfig": {
     "extends": [
