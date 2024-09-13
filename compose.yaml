@@ -2,8 +2,8 @@ name: example-alpacaxander
 
 services:
   example-api:
-    build: ./example-data
-    env_file: "./example-data/.env.development"
+    build: ./example-backend
+    env_file: "./example-backend/.env.development"
     ports:
       - "8080:8080"
 
