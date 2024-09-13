@@ -33,15 +33,17 @@ public class SecurityConfiguration {
         http.cors(withDefaults())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .authorizeHttpRequests(
-                        authorizeHttpRequests -> authorizeHttpRequests.anyRequest().permitAll())
-                .csrf(csrf -> csrf.disable());
+                        authorizeHttpRequests -> authorizeHttpRequests.anyRequest().authenticated())
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(withDefaults()))
+                .oauth2Login(withDefaults());
         return http.build();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(SecurityConfigProperties properties) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(properties.getOrigin()));
+        configuration.setAllowedOriginPatterns(List.of(properties.getOrigin()));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setMaxAge(Duration.ofHours(1));

@@ -7,6 +7,13 @@
 app:
   security:
     origin: "*"
+okta:
+  oauth2:
+    issuer: https://dev-0b3prm5u83tvplfb.us.auth0.com/
+    client-id: a5PYcHXt271eWcbVZKjPSJboh2I1myol
+    audience: https://localhost:8080
+    # TODO THIS IS A SECRET
+    client-secret: CLIENT_SECRET
 elide:
   json-api:
     enabled: true
@@ -51,21 +58,21 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        '[default_batch_fetch_size]': 100
-        '[use_scrollable_resultset]': true
+        "[default_batch_fetch_size]": 100
+        "[use_scrollable_resultset]": true
     hibernate:
       naming:
-        physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
+        physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
   datasource:
-    url: 'jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1'
-    username: 'sa'
-    password: ''
-    driver-class-name: 'org.h2.Driver'
+    url: "jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1"
+    username: "sa"
+    password: ""
+    driver-class-name: "org.h2.Driver"
   liquibase:
     enabled: true
-    change-log: 'classpath:db/changelog/changelog.xml'
+    change-log: "classpath:db/changelog/changelog.xml"
   activemq:
-    broker-url: 'vm://embedded?broker.persistent=false,useShutdownHook=false'
+    broker-url: "vm://embedded?broker.persistent=false,useShutdownHook=false"
     in-memory: true
 server:
   port: 8080

@@ -8,7 +8,7 @@ services:
 
   example-ui:
     build: ./example-frontend
-    env_file: "./example-frontend/local.env"
+    env_file: "./example-frontend/.env.development.local"
     volumes:
       - ./example-frontend/src:/src
     ports:

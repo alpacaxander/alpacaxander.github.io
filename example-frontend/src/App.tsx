@@ -5,9 +5,26 @@ import Logout from "./features/login/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+    useAuth0();
   if (isLoading) {
     return <div>Loading ...</div>;
+  }
+  if (user && isAuthenticated) {
+    getAccessTokenSilently({
+      authorizationParams: {
+        audience: "https://localhost:8080",
+      },
+    }).then((val) => {
+      fetch("http://localhost:8080/api/group", {
+        headers: {
+          authorization: `Bearer ${val}`,
+        },
+      }).then((result) => {
+        result.text().then(console.log);
+        console.log();
+      });
+    });
   }
   let profile;
   if (isAuthenticated && user) {
