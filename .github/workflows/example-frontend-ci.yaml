@@ -24,9 +24,23 @@ jobs:
       - name: Run eslint
         run: npm run lint
 
+  Audit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.8]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run install
+        run: npm audit
+
   Build:
     name: Build production docker image
-    needs: Lint
+    needs: [Lint, Audit]
     runs-on: ubuntu-latest
     strategy:
       matrix:
