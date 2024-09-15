@@ -1,4 +1,4 @@
-name: Example GitHub Actions CI for example frontend
+name: Example GitHub Actions CI for frontend
 on: [pull_request]
 
 defaults:
