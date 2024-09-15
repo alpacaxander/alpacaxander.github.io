@@ -1,5 +1,4 @@
 name: Example GitHub Actions CI for example frontend
-run-name:
 on: [pull_request]
 
 defaults:
