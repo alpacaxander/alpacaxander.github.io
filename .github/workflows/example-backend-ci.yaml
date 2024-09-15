@@ -1,4 +1,4 @@
-name: Example GitHub Actions CI for example backend
+name: Example GitHub Actions CI for backend
 run-name:
 on: [pull_request]
 
