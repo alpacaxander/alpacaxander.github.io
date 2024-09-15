@@ -23,3 +23,15 @@ jobs:
         run: npm install
       - name: Run eslint
         run: npm run lint
+
+  Build:
+    name: Build production docker image
+    needs: Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.8]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production docker image
+        run: npm run build:production:docker
