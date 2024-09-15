@@ -19,39 +19,44 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm run start:development",
-    "start:docker": "npm run start:development:docker",
-    "start:prod": "npm run start:production",
-    "start:prod:docker": "npm run start:production:docker",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rm -rf ./node_modules ./build",
     "format": "npx prettier --config prettierrc.json --write src/",
     "lint": "npx eslint src/",
     "lint:fix": "npx eslint --fix src/",
+    
+    "start": "npm run start:development",
+    "start:docker": "npm run start:development:docker",
+    "start:prod": "npm run start:production",
+    "start:prod:docker": "npm run start:production:docker",
 
-    "start:dev": "npm run start:development",
     "start:development": "react-scripts start",
-    "build:docker": "npm run build:development:docker",
-    "build:dev:docker": "npm run build:development:docker",
+
     "build:development:docker": "docker buildx build -t example-frontend .",
-    "run:docker": "npm run run:development:docker",
-    "run:dev:docker": "npm run run:development:docker",
     "run:development:docker": "docker run -p '3000:3000' -v './src:/src' example-frontend",
-    "start:dev:docker": "npm run start:development:docker",
     "start:development:docker": "npm run build:development:docker && npm run run:development:docker",
-    "build": "npm run build:production",
-    "build:prod": "npm run build:production",
+
     "build:production": "react-scripts build",
-    "run": "npm run run:production",
-    "run:prod": "npm run run:production",
     "run:production": "serve -s build",
     "start:production": "npm run build:production && npm run run:production",
-    "build:prod:docker": "npm run build:production:docker",
+
     "build:production:docker": "docker buildx build -t example-frontend -f Dockerfile.production .",
-    "run:prod:docker": "npm run run:production:docker",
     "run:production:docker": "docker run -p '3000:3000' example-frontend",
-    "start:production:docker": "npm run build:production:docker && npm run run:production:docker"
+    "start:production:docker": "npm run build:production:docker && npm run run:production:docker",
+
+    "start:dev": "npm run start:development",
+    "build:docker": "npm run build:development:docker",
+    "build:dev:docker": "npm run build:development:docker",
+    "run:docker": "npm run run:development:docker",
+    "run:dev:docker": "npm run run:development:docker",
+    "start:dev:docker": "npm run start:development:docker",
+    "build": "npm run build:production",
+    "build:prod": "npm run build:production",
+    "run": "npm run run:production",
+    "run:prod": "npm run run:production",
+    "build:prod:docker": "npm run build:production:docker",
+    "run:prod:docker": "npm run run:production:docker"
   },
   "eslintConfig": {
     "extends": [
