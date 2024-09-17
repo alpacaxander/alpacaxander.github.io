@@ -1,22 +1,22 @@
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const { loginWithRedirect } = useAuth0()
+  const { loginWithRedirect, isAuthenticated } = useAuth0()
+  const navigate = useNavigate()
 
-  return (
-    <button
-      onClick={() =>
-        loginWithRedirect({
-          authorizationParams: {
-            audience: 'https://localhost:8080',
-          },
-        })
-      }
-    >
-      Log In
-    </button>
-  )
+  if (!isAuthenticated) {
+    loginWithRedirect({
+      authorizationParams: {
+        audience: 'https://localhost:8080',
+      },
+    })
+  } else {
+    navigate('/home')
+  }
+
+  return <div></div>
 }
 
 export default Login
