@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
+    "@reduxjs/toolkit": "^2.2.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,8 +12,10 @@
     "@types/node": "^16.18.108",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
@@ -25,26 +28,20 @@
     "format": "npx prettier --config prettierrc.json --write src/",
     "lint": "npx eslint src/",
     "lint:fix": "npx eslint --fix src/",
-    
     "start": "npm run start:development",
     "start:docker": "npm run start:development:docker",
     "start:prod": "npm run start:production",
     "start:prod:docker": "npm run start:production:docker",
-
     "start:development": "react-scripts start",
-
     "build:development:docker": "docker buildx build -t example-frontend .",
     "run:development:docker": "docker run -p '3000:3000' -v './src:/src' example-frontend",
     "start:development:docker": "npm run build:development:docker && npm run run:development:docker",
-
     "build:production": "react-scripts build",
     "run:production": "serve -s build",
     "start:production": "npm run build:production && npm run run:production",
-
     "build:production:docker": "docker buildx build -t example-frontend -f Dockerfile.production .",
     "run:production:docker": "docker run -p '3000:3000' example-frontend",
     "start:production:docker": "npm run build:production:docker && npm run run:production:docker",
-
     "start:dev": "npm run start:development",
     "build:docker": "npm run build:development:docker",
     "build:dev:docker": "npm run build:development:docker",
