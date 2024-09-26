@@ -1,27 +1,28 @@
 import Logout from '../login/Logout'
-import logo from '../../logo.svg'
-import store from '../../core/store/Store'
-import { fetchProducts } from '../../core/store/ProductSlice'
+import store, { IRootState } from '../../core/store/Store'
+import { fetchGroups } from '../../core/store/GroupSlice'
+import { useSelector } from 'react-redux'
+import Group from '../../shared/group/Group'
+import { useEffect } from 'react'
 
 function Home() {
+  const selectGroups = useSelector((state: IRootState) => state.groups)
+  const auth = useSelector((state: IRootState) => state.auth)
+
+  useEffect(() => {
+    if (selectGroups.status === 'idle' && auth.status === 'succeeded') {
+      store.dispatch(fetchGroups())
+    }
+  }, [selectGroups, auth])
+
+  let groups = selectGroups.items.map((group) => (
+    <Group group={group} key={group.id}></Group>
+  ))
+
   return (
     <div className="home">
-      <button onClick={() => store.dispatch(fetchProducts())}>dispatch</button>
+      {groups}
       <Logout></Logout>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { api } from '../api/Axios'
 
 export const fetchToken = createAsyncThunk(
   'authentication/token',
@@ -42,6 +43,7 @@ const authenticationSlice = createSlice({
       .addCase(fetchToken.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.token = action.payload || null
+        api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
       })
       .addCase(fetchToken.rejected, (state, action) => {
         state.status = 'rejected'
