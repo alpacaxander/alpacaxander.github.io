@@ -6,4 +6,5 @@ RUN npm install
 ADD public public
 ADD src src
 ADD .env.development /
+ADD tailwind.config.js /
 ENTRYPOINT ["npm", "run", "start"]
