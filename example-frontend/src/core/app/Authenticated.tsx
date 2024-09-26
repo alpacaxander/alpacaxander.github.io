@@ -4,7 +4,7 @@ import { fetchToken } from '../store/AuthenticationSlice'
 import store, { IRootState } from '../store/Store'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { api } from './Axios'
+import { api } from '../api/Axios'
 
 function Authenticated() {
   const { isAuthenticated, user } = useAuth0()
@@ -15,12 +15,6 @@ function Authenticated() {
       store.dispatch(fetchToken())
     }
   }
-
-  useEffect(() => {
-    if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    }
-  }, [token])
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }
