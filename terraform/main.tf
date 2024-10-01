@@ -1,113 +1,74 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
 
-provider "aws" {
-  region = var.region
-}
+# Create a VPC
+resource "aws_vpc" "vpc_01" {
+  cidr_block = "172.31.0.0/16"
 
-# Filter out local zones, which are not currently supported 
-# with managed node groups
-data "aws_availability_zones" "available" {
-  filter {
-    name   = "opt-in-status"
-    values = ["opt-in-not-required"]
+  tags = {
+    Name = "vpc_01"
   }
 }
 
-locals {
-  cluster_name = "education-eks-${random_string.suffix.result}"
-}
+resource "aws_subnet" "subnet_01" {
+  vpc_id            = aws_vpc.vpc_01.id
+  cidr_block        = "172.31.0.0/24"
+  availability_zone = "us-west-1b"
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}
-
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.8.1"
-
-  name = "education-vpc"
-
-  cidr = "10.0.0.0/16"
-  azs  = ["us-west-1b", "us-west-1c"]
-
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24"]
-
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
-
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
+  tags = {
+    Name = "subnet_01"
   }
 }
 
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "20.8.5"
+resource "aws_subnet" "subnet_02" {
+  vpc_id            = aws_vpc.vpc_01.id
+  cidr_block        = "172.31.1.0/24"
+  availability_zone = "us-west-1c"
 
-  cluster_name    = local.cluster_name
-  cluster_version = "1.30"
-
-  cluster_endpoint_public_access           = true
-  enable_cluster_creator_admin_permissions = true
-
-  cluster_addons = {
-    aws-ebs-csi-driver = {
-      service_account_role_arn = module.irsa-ebs-csi.iam_role_arn
-    }
-  }
-
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-
-  eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
-
-  }
-
-  eks_managed_node_groups = {
-    one = {
-      name = "node-group-1"
-
-      instance_types = ["t3.small"]
-
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
-    }
-
-    two = {
-      name = "node-group-2"
-
-      instance_types = ["t3.small"]
-
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
-    }
+  tags = {
+    Name = "subnet_02"
   }
 }
 
+resource "aws_network_interface" "interface_01" {
+  subnet_id   = aws_subnet.subnet_01.id
+  private_ips = ["172.31.0.158"]
 
-# https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
-data "aws_iam_policy" "ebs_csi_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  tags = {
+    Name = "interface_01"
+  }
 }
 
-module "irsa-ebs-csi" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.39.0"
+resource "aws_instance" "ui" {
+  ami           = "ami-047d7c33f6e7b4bc4"
+  instance_type = "t2.micro"
 
-  create_role                   = true
-  role_name                     = "AmazonEKSTFEBSCSIRole-${module.eks.cluster_name}"
-  provider_url                  = module.eks.oidc_provider
-  role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+  credit_specification {
+    cpu_credits = "standard"
+  }
+
+  tags = {
+    Name = "example-frontend"
+  }
+}
+
+resource "aws_lb" "example_lb" {
+  name               = "Example-lb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = ["sg-0dc78785bef5e972f"]
+  subnets            = ["subnet-0410262d15b9543e3", "subnet-08b4fd65b6c7eb837"]
+}
+
+resource "aws_route53_zone" "paulsell_dev" {
+  name = "paulsell.dev"
+}
+
+resource "aws_route53_record" "main" {
+  zone_id = aws_route53_zone.paulsell_dev.zone_id
+  name    = "paulsell.dev"
+  type    = "A"
+  alias {
+    name                   = aws_lb.example_lb.dns_name
+    zone_id                = aws_lb.example_lb.zone_id
+    evaluate_target_health = true
+  }
 }
