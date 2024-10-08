@@ -2,7 +2,7 @@ import Login from '../../features/login/Login'
 import Home from '../../features/home/Home'
 import { Navigate, RouteObject } from 'react-router-dom'
 import Authenticated from './Authenticated'
-import Group from '../../features/group/Group'
+import GroupPage from '../../features/group/GroupPage'
 const Routes: RouteObject[] = [
   {
     path: '/login',
@@ -19,7 +19,7 @@ const Routes: RouteObject[] = [
       },
       {
         path: '/groups/:groupId',
-        element: <Group />,
+        element: <GroupPage />,
       },
     ],
   },

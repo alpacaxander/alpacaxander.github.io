@@ -1,47 +1,44 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { api } from '../api/Axios'
+import { Product } from '../api/ProjectAPITypes'
+import { createAppSlice } from './Slice'
+import { LoadingState } from './Store'
 
-export const fetchProducts = createAsyncThunk(
-  'products/fetchAll',
-  async (arg, thunkApi) => {
-    try {
-      const response = await api.get('group/com.yahoo.elide/products')
-      return response.data
-    } catch (error) {
-      throw error
-    }
-  }
-)
-
-interface ProductsState {
-  items: any[]
-  status: 'idle' | 'pending' | 'succeeded' | 'rejected'
-  error: string | null
-}
-
-const productSlice = createSlice({
+const productsSlice = createAppSlice({
   name: 'products',
-  initialState: {
-    items: [],
-    status: 'idle',
-    error: null,
-  } as ProductsState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.status = 'pending'
-        state.error = null
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.items = action.payload
-      })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'rejected'
-        state.error = action.error.message ?? 'Unknown Error'
-      })
-  },
+  initialState: {} as Record<string, LoadingState<Product>>,
+  reducers: (create) => ({
+    allByGroup: create.asyncThunk(
+      async (args: { groupId: string }, _thunkApi) => {
+        try {
+          const response = await api.get(`group/${args.groupId}/products`)
+          return response.data.data
+        } catch (error) {
+          throw error
+        }
+      },
+      {
+        pending: (state, action) => {
+          state[action.meta.arg.groupId] = {
+            items: [],
+            item: null,
+            status: 'pending',
+            error: null,
+          }
+        },
+        fulfilled: (state, action) => {
+          state[action.meta.arg.groupId].status = 'succeeded'
+          state[action.meta.arg.groupId].items = action.payload
+        },
+        rejected: (state, action) => {
+          state[action.meta.arg.groupId].status = 'rejected'
+          state[action.meta.arg.groupId].error =
+            action.error.message ?? 'Unknown Error'
+        },
+      }
+    ),
+  }),
 })
 
-export default productSlice.reducer
+export const { allByGroup } = productsSlice.actions
+
+export default productsSlice.reducer

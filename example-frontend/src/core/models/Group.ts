@@ -1,19 +1,7 @@
+import { Group } from '../api/ProjectAPITypes'
+
 export interface GroupState {
-  items: any[]
+  items: Group[]
   status: 'idle' | 'pending' | 'succeeded' | 'rejected'
   error: string | null
-}
-
-export interface Group {
-  type: 'group'
-  id: string
-  attributes: {
-    commonName: string
-    description: string
-  }
-  relationships: {
-    products: {
-      data: any[]
-    }
-  }
 }

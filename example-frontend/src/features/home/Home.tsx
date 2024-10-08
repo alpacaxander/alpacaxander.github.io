@@ -1,6 +1,6 @@
 import Logout from '../login/Logout'
 import store, { IRootState } from '../../core/store/Store'
-import { fetchGroups } from '../../core/store/GroupSlice'
+import { all } from '../../core/store/GroupSlice'
 import { useSelector } from 'react-redux'
 import GroupCard from '../../shared/group/GroupCard'
 import { useEffect } from 'react'
@@ -10,8 +10,13 @@ function Home() {
   const auth = useSelector((state: IRootState) => state.auth)
 
   useEffect(() => {
-    if (selectGroups.status === 'idle' && auth.status === 'succeeded') {
-      store.dispatch(fetchGroups())
+    if (
+      selectGroups.status !== 'succeeded' &&
+      selectGroups.status !== 'pending' &&
+      !selectGroups.items.length &&
+      auth.status === 'succeeded'
+    ) {
+      store.dispatch(all({}))
     }
   }, [selectGroups, auth])
 

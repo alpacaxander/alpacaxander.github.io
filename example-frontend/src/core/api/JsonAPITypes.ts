@@ -7,18 +7,18 @@ interface JSONObject {
 interface JSONArray extends Array<JSONValue> {}
 
 type AttributesObject = JSONObject
-interface RelationshipsObject {
+export interface RelationshipsObject {
   [x: string]:
     | ToOneRelationshipObject<ResourceObject>
     | ToManyRelationshipObject<ResourceObject>
 }
-type ToOneRelationshipObject<T extends ResourceObject> = {
+export type ToOneRelationshipObject<T extends ResourceObject> = {
   links?: LinksObject
   data?: ToOneResourceLinkage<T>
   meta?: MetaObject
   // TODO Extensions
 }
-type ToManyRelationshipObject<T extends ResourceObject> = {
+export type ToManyRelationshipObject<T extends ResourceObject> = {
   links?: LinksObject
   data?: ToManyResourceLinkage<T>
   meta?: MetaObject
@@ -52,20 +52,4 @@ export type ResourceObject = {
   relationships?: RelationshipsObject
   links?: LinksObject
   meta?: MetaObject
-}
-
-export interface Product extends ResourceObject {
-  type: 'product'
-}
-
-export interface Group extends ResourceObject {
-  type: 'group'
-  attributes?: {
-    commonName: string
-    description: string
-  }
-  relationships?: {
-    products: ToManyRelationshipObject<Product>
-  }
-  links?: {}
 }
