@@ -6,18 +6,20 @@
 
 app:
   security:
-    origin: "*"
+    origin: '*'
 okta:
   oauth2:
     issuer: https://${AUTH_O_TENANT}.us.auth0.com/
     client-id: ${AUTH_O_CLIENT_ID}
     audience: ${AUTH_O_AUDIENCE}
-    # TODO THIS IS A SECRET
     client-secret: ${AUTH_O_CLIENT_SECRET}
 elide:
+  baseUrl: 'http://localhost:8080'
   json-api:
-    enabled: true
     path: /api
+    enabled: true
+    links:
+      enabled: true
   graphql:
     enabled: true
     path: /graphql/api
@@ -58,21 +60,21 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        "[default_batch_fetch_size]": 100
-        "[use_scrollable_resultset]": true
+        '[default_batch_fetch_size]': 100
+        '[use_scrollable_resultset]': true
     hibernate:
       naming:
-        physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+        physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
   datasource:
-    url: "jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1"
-    username: "sa"
-    password: ""
-    driver-class-name: "org.h2.Driver"
+    url: 'jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1'
+    username: 'sa'
+    password: ''
+    driver-class-name: 'org.h2.Driver'
   liquibase:
     enabled: true
-    change-log: "classpath:db/changelog/changelog.xml"
+    change-log: 'classpath:db/changelog/changelog.xml'
   activemq:
-    broker-url: "vm://embedded?broker.persistent=false,useShutdownHook=false"
+    broker-url: 'vm://embedded?broker.persistent=false,useShutdownHook=false'
     in-memory: true
 server:
   port: 8080

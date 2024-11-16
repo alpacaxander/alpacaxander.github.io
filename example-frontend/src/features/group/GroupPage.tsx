@@ -4,6 +4,7 @@ import store, { IRootState } from '../../core/store/Store'
 import { useEffect } from 'react'
 import GroupCard from '../../shared/group/GroupCard'
 import { one } from '../../core/store/GroupSlice'
+import GroupDetailCard from '../../shared/group/GroupDetailCard'
 
 function GroupPage() {
   let { groupId } = useParams()
@@ -13,6 +14,7 @@ function GroupPage() {
   useEffect(() => {
     if (
       groupId &&
+      groupId !== selectGroup?.item?.id &&
       selectGroup.status !== 'pending' &&
       !selectGroup.item &&
       auth.status === 'succeeded'
@@ -21,7 +23,7 @@ function GroupPage() {
     }
   }, [selectGroup, auth])
 
-  if (!selectGroup.item) {
+  if (!selectGroup.item || !groupId) {
     return <div>loading</div>
   }
 
@@ -35,6 +37,8 @@ function GroupPage() {
           Home
         </button>
       </Link>
+      { groupId }
+      <GroupDetailCard groupId={groupId}></GroupDetailCard>
       <GroupCard group={selectGroup.item}></GroupCard>
     </div>
   )

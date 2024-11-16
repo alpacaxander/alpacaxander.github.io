@@ -3,7 +3,11 @@ name: example-alpacaxander
 services:
   example-api:
     build: ./example-backend
-    env_file: "./example-backend/.env.development"
+    env_file:
+      - path: ./example-backend/.env.development
+        required: true # default
+      - path: ./example-backend/.env.local
+        required: false
     ports:
       - "8080:8080"
 
